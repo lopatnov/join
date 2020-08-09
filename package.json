@@ -1,31 +1,30 @@
 {
-  "name": "@my-templates/sample-library",
-  "version": "1.1.0",
+  "name": "@lopatnov/join",
+  "version": "1.0.0",
   "license": "Apache-2.0",
   "author": "lopatnov",
-  "description": "Demonstrates a sample library template",
-  "homepage": "https://my-templates.github.io/TypeScript-Library/",
+  "description": "Object join technics",
+  "homepage": "https://lopatnov.github.io/join/",
   "keywords": [
     "TypeScript",
-    "JavaScript",
-    "library",
+    "Library",
     "typescript-library",
-    "javascript-library"
+    "join"
   ],
-  "umdName": "sampleLibrary",
-  "libraryFile": "library",
-  "main": "dist/library.js",
-  "module": "dist/library.es.js",
-  "types": "dist/library.d.ts",
+  "umdName": "join",
+  "libraryFile": "join",
+  "main": "dist/join.js",
+  "module": "dist/join.es.js",
+  "types": "dist/join.d.ts",
   "files": [
     "dist"
   ],
   "repository": {
-    "type": "git",    
-    "url": "git+https://github.com/My-Templates/TypeScript-Library.git"
+    "type": "git",
+    "url": "git+https://github.com/lopatnov/join.git"
   },
   "bugs": {
-    "url": "https://github.com/My-Templates/TypeScript-Library/issues"
+    "url": "https://github.com/lopatnov/join/issues"
   },
   "scripts": {
     "build": "rollup -c rollup.config.ts",
@@ -38,19 +37,19 @@
     "access": "public"
   },
   "devDependencies": {
-    "@lopatnov/rollup-plugin-uglify": "^1.2.1",
-    "@types/jest": "^24.0.25",
+    "@lopatnov/rollup-plugin-uglify": "^2.1.0",
+    "@types/jest": "^26.0.9",
     "@types/typescript": "^2.0.0",
-    "jest": "^24.9.0",
-    "jest-config": "^24.9.0",
-    "rollup": "^1.27.14",
+    "jest": "^26.2.2",
+    "jest-config": "^26.2.2",
+    "rollup": "^2.23.1",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-json": "^4.0.0",
     "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-sourcemaps": "^0.4.2",
-    "rollup-plugin-typescript2": "^0.25.3",
-    "terser": "^4.4.3",
-    "ts-jest": "^24.2.0",
-    "typescript": "^3.7.4"
+    "rollup-plugin-sourcemaps": "^0.6.2",
+    "rollup-plugin-typescript2": "^0.27.2",
+    "terser": "^5.0.0",
+    "ts-jest": "^26.1.4",
+    "typescript": "^3.9.7"
   }
 }
