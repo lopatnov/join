@@ -33,13 +33,15 @@ npm install @lopatnov/join
 ### TypeScript
 
 ```typescript
-import sampleLibrary from "@lopatnov/join";
+import { join, JoinTypes } from "@lopatnov/join";
 ```
 
 ### JavaScript
 
 ```javascript
-var sampleLibrary = require("@lopatnov/join");
+var library = require("@lopatnov/join");
+var join = library.join;
+var JoinTypes = library.JoinTypes;
 ```
 
 ## How to use
