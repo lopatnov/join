@@ -22,7 +22,7 @@ The TypeScript library template.
 npm install @lopatnov/join
 ```
 
-[Browser](https://lopatnov.github.io/join/dist/library.js)
+[Browser](https://lopatnov.github.io/join/dist/join.js)
 
 ```html
 <script src="https://lopatnov.github.io/join/dist/join.min.js"></script>
