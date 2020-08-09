@@ -44,7 +44,43 @@ var join = library.join;
 var JoinTypes = library.JoinTypes;
 ```
 
+## Join Types
+
+![Join Types](./img/join-types.png)
+
+`innerLeft` + `innerRight` = deep merge
+
+```typescript
+export enum JoinTypes {
+  none       = 0b0000,
+  left       = 0b1000,
+  right      = 0b0001,
+  innerLeft  = 0b0100,
+  innerRight = 0b0010,
+  innerJoin  = none | innerLeft | innerRight | none,
+  leftJoin   = left | innerLeft | innerRight | none,
+  rightJoin  = none | innerLeft | innerRight | right,
+  fullJoin   = left | innerLeft | innerRight | right,
+  expand     = left | none      | innerRight | right
+}
+```
+
 ## How to use
+
+```ts
+// 1. Set join Type
+function join(joinType?: JoinTypes) => (local function)<TContext>(context: TContext)
+```
+
+```ts
+// 2. Set context
+(local function)<TContext>(context: TContext) => (local function)<TJoinObject>(joinObject: TJoinObject)
+```
+
+```ts
+// 3. Set join object
+(local function)<TJoinObject>(joinObject: TJoinObject): TContext & TJoinObject
+```
 
 ### As three separate operations
 
