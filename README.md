@@ -1,77 +1,93 @@
-# @my-templates/sample-library
+# @lopatnov/join
 
-[![NPM version](https://badge.fury.io/js/%40my-templates%2Fsample-library.svg)](https://www.npmjs.com/package/@my-templates/sample-library)
-[![GitHub issues](https://img.shields.io/github/issues/My-Templates/TypeScript-Library)](https://github.com/My-Templates/TypeScript-Library/issues)
-[![GitHub forks](https://img.shields.io/github/forks/My-Templates/TypeScript-Library)](https://github.com/My-Templates/TypeScript-Library/network)
-[![GitHub stars](https://img.shields.io/github/stars/My-Templates/TypeScript-Library)](https://github.com/My-Templates/TypeScript-Library/stargazers)
-![License](https://img.shields.io/github/license/My-Templates/TypeScript-Library)
+[![NPM version](https://badge.fury.io/js/%40lopatnov%2Fjoin.svg)](https://www.npmjs.com/package/@lopatnov/join)
+[![GitHub issues](https://img.shields.io/github/issues/lopatnov/join)](https://github.com/lopatnov/join/issues)
+[![GitHub forks](https://img.shields.io/github/forks/lopatnov/join)](https://github.com/lopatnov/join/network)
+[![GitHub stars](https://img.shields.io/github/stars/lopatnov/join)](https://github.com/lopatnov/join/stargazers)
+[![License](https://img.shields.io/github/license/lopatnov/join)](https://github.com/lopatnov/join/blob/master/LICENSE)
 
-[![build-and-test-package](https://github.com/My-Templates/TypeScript-Library/workflows/build-and-test-package/badge.svg)](https://github.com/My-Templates/TypeScript-Library/tree/master/tests)
-[![publish-npm-package](https://github.com/My-Templates/TypeScript-Library/workflows/publish-npm-package/badge.svg)](https://github.com/My-Templates/TypeScript-Library/releases)
+[![build-and-test-package](https://github.com/lopatnov/join/workflows/build-and-test-package/badge.svg)](https://github.com/lopatnov/join/tree/master/tests)
+[![publish-npm-package](https://github.com/lopatnov/join/workflows/publish-npm-package/badge.svg)](https://github.com/lopatnov/join/releases)
 
 [![Patreon](https://img.shields.io/badge/Donate-Patreon-informational)](https://www.patreon.com/lopatnov)
-[![Twitter](https://img.shields.io/twitter/url?url=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2F%40my-templates%2Fsample-library)](https://twitter.com/intent/tweet?text=I%20want%20to%20share%20TypeScript%20library:&url=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2F%40my-templates%2Fsample-library)
+[![Twitter](https://img.shields.io/twitter/url?url=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2F%40lopatnov%2Fjoin)](https://twitter.com/intent/tweet?text=I%20want%20to%20share%20TypeScript%20library:&url=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2F%40lopatnov%2Fjoin)
 
 The TypeScript library template.
 
 ## Install
 
-[![https://nodei.co/npm/@my-templates/sample-library.png?downloads=true&downloadRank=true&stars=true](https://nodei.co/npm/@my-templates/sample-library.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/@my-templates/sample-library)
+[![https://nodei.co/npm/@lopatnov/join.png?downloads=true&downloadRank=true&stars=true](https://nodei.co/npm/@lopatnov/join.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/@lopatnov/join)
 
 ```shell
-npm install @my-templates/sample-library
+npm install @lopatnov/join
 ```
 
-[Browser](//my-templates.github.io/TypeScript-Library/dist/library.js)
+[Browser](https://lopatnov.github.io/join/dist/library.js)
 
 ```html
-<script src="//my-templates.github.io/TypeScript-Library/dist/library.min.js"></script>
+<script src="https://lopatnov.github.io/join/dist/library.min.js"></script>
 ```
 
 ## Import package to the project
 
+### TypeScript
+
 ```typescript
-import sampleLibrary from "@my-templates/sample-library";
+import sampleLibrary from "@lopatnov/join";
 ```
 
-or
+### JavaScript
 
 ```javascript
-var sampleLibrary = require("@my-templates/sample-library");
+var sampleLibrary = require("@lopatnov/join");
 ```
 
-## package.json
+## How to use
 
-Change variables:
+### As three separate operations
 
-- name
-- description
-- umdName
-- libraryFile
-- main
-- module
-- types
-- homepage
-- repository
-- bugs
-- keywords
+```typescript
+const rightJoin = join(JoinTypes.right);
 
-## commands
+const joinObject = rightJoin({
+  sample1: "One",
+  sample2: "Two",
+  sample3: "Three",
+});
 
-`npm run build`
+const m = joinObject({
+  sample2: "Dos",
+  sample3: "Tres",
+  sample4: "Quatro",
+});
+```
 
-`npm run watch`
+### As a function
 
-`npm run test`
+```typescript
+const c = join(JoinTypes.innerJoin)({
+  sample1: "One",
+  sample2: "Two",
+  sample3: {
+    smile: "cheese",
+  },
+})({
+  sample2: "Dos",
+  sample3: {
+    sorrir: "queijo",
+  },
+  sample4: "Quatro",
+});
+```
 
-# Demo
+## Demo
 
-See, how it's working: [https://runkit.com/lopatnov/sample-library](https://runkit.com/lopatnov/sample-library)
+See, how it's working: [https://runkit.com/lopatnov/join](https://runkit.com/lopatnov/join)
 
-Test it with a runkit: [https://npm.runkit.com/@my-templates/sample-library](https://npm.runkit.com/%40my-templates%2Fsample-library)
+Test it with a runkit: [https://npm.runkit.com/@lopatnov/join](https://npm.runkit.com/%40lopatnov%2Fjoin)
 
 ## Rights and Agreements
 
-License [Apache-2.0](https://github.com/My-Templates/TypeScript-Library/blob/master/LICENSE)
+License [Apache-2.0](https://github.com/lopatnov/join/blob/master/LICENSE)
 
 Copyright 2020 Oleksandr Lopatnov
