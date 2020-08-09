@@ -25,7 +25,7 @@ npm install @lopatnov/join
 [Browser](https://lopatnov.github.io/join/dist/library.js)
 
 ```html
-<script src="https://lopatnov.github.io/join/dist/library.min.js"></script>
+<script src="https://lopatnov.github.io/join/dist/join.min.js"></script>
 ```
 
 ## Import package to the project
