@@ -1,6 +1,6 @@
 # Contributions Welcome
 
-Thanks for your interest in contributing to **TypeScript-Library**! Contributing to open source projects like this one can be a rewarding way to learn, teach, and build experience. Not only that, contributing is a great way to get involved with _social coding_. We are excited to see what amazing contributions you will make, as well as how your contributions will benefit others.
+Thanks for your interest in contributing to **join**! Contributing to open source projects like this one can be a rewarding way to learn, teach, and build experience. Not only that, contributing is a great way to get involved with _social coding_. We are excited to see what amazing contributions you will make, as well as how your contributions will benefit others.
 
 If you are new to contributing to open source projects, the process can be intimidating. Not to worry! To help ensure both you and the community get the most out of your contributions, we've put together the following guidelines.
 
@@ -76,13 +76,13 @@ To start making a contribution:
 1. `clone` your forked repository (_noob tip: the actual command you type in is everything after the $_):
 
    ```shell
-   $ git clone https://github.com/<YOUR-USERNAME>/TypeScript-Library
+   $ git clone https://github.com/<YOUR-USERNAME>/join
    ```
 
 1. Add a new remote that points to the original project so you can sync project changes with your local copy:
 
    ```shell
-   $ git remote add upstream https://github.com/my-templates.github.io/TypeScript-Library
+   $ git remote add upstream https://github.com/lopatnov.github.io/join
    ```
 
 1. Pull upstream changes into your local repositories `development` branch:
@@ -126,7 +126,7 @@ To start making a contribution:
 Happy contributing!
 
 [code-of-conduct]: ./CODE_OF_CONDUCT.md
-[about]: https://my-templates.github.io/TypeScript-Library/
-[wiki]: https://github.com/My-Templates/TypeScript-Library/wiki
-[issues]: https://github.com/my-templates.github.io/TypeScript-Library/issues
-[pull-requests]: https://github.com/my-templates.github.io/TypeScript-Library/pulls
+[about]: https://lopatnov.github.io/join/
+[wiki]: https://github.com/lopatnov/join/wiki
+[issues]: https://github.com/lopatnov.github.io/join/issues
+[pull-requests]: https://github.com/lopatnov.github.io/join/pulls
