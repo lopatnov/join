@@ -1,5 +1,6 @@
 # @lopatnov/join
 
+[![npm](https://img.shields.io/npm/dt/@lopatnov/join)](https://www.npmjs.com/package/@lopatnov/join)
 [![NPM version](https://badge.fury.io/js/%40lopatnov%2Fjoin.svg)](https://www.npmjs.com/package/@lopatnov/join)
 [![GitHub issues](https://img.shields.io/github/issues/lopatnov/join)](https://github.com/lopatnov/join/issues)
 [![GitHub forks](https://img.shields.io/github/forks/lopatnov/join)](https://github.com/lopatnov/join/network)
