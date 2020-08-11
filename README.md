@@ -65,6 +65,8 @@ enum JoinTypes {
 }
 ```
 
+`JoinTypes.expand` is default join type
+
 ## How to use
 
 ```ts
