@@ -51,7 +51,7 @@ var JoinTypes = library.JoinTypes;
 `innerLeft` + `innerRight` = deep merge
 
 ```typescript
-export enum JoinTypes {
+enum JoinTypes {
   none       = 0b0000,
   left       = 0b1000,
   right      = 0b0001,
