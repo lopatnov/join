@@ -1,5 +1,6 @@
 # @lopatnov/join
 
+[![npm](https://img.shields.io/npm/dt/@lopatnov/join)](https://www.npmjs.com/package/@lopatnov/join)
 [![NPM version](https://badge.fury.io/js/%40lopatnov%2Fjoin.svg)](https://www.npmjs.com/package/@lopatnov/join)
 [![GitHub issues](https://img.shields.io/github/issues/lopatnov/join)](https://github.com/lopatnov/join/issues)
 [![GitHub forks](https://img.shields.io/github/forks/lopatnov/join)](https://github.com/lopatnov/join/network)
@@ -11,6 +12,7 @@
 
 [![Patreon](https://img.shields.io/badge/Donate-Patreon-informational)](https://www.patreon.com/lopatnov)
 [![Twitter](https://img.shields.io/twitter/url?url=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2F%40lopatnov%2Fjoin)](https://twitter.com/intent/tweet?text=I%20want%20to%20share%20TypeScript%20library:&url=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2F%40lopatnov%2Fjoin)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-lopatnov-informational?style=social&logo=linkedin)](https://www.linkedin.com/in/lopatnov/)
 
 Object join technics.
 
@@ -51,7 +53,7 @@ var JoinTypes = library.JoinTypes;
 `innerLeft` + `innerRight` = deep merge
 
 ```typescript
-export enum JoinTypes {
+enum JoinTypes {
   none       = 0b0000,
   left       = 0b1000,
   right      = 0b0001,
@@ -64,6 +66,8 @@ export enum JoinTypes {
   expand     = left | none      | innerRight | right
 }
 ```
+
+`JoinTypes.expand` is default join type
 
 ## How to use
 
