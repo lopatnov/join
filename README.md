@@ -50,16 +50,14 @@ var JoinTypes = library.JoinTypes;
 
 ![Join Types](./img/join-types.png)
 
-`innerLeft` + `innerRight` = deep merge
-
 ```typescript
 enum JoinTypes {
   none       = 0b0000,
-  left       = 0b1000,
-  right      = 0b0001,
-  innerLeft  = 0b0100,
-  innerRight = 0b0010,
-  innerJoin  = none | innerLeft | innerRight | none,
+  left       = 0b1000, // take unique left object properties
+  right      = 0b0001, // take unique right object properties
+  innerLeft  = 0b0100, // take non-unique (inner) properties from left object
+  innerRight = 0b0010, // take non-unique (inner) properties from right object
+  innerJoin  = none | innerLeft | innerRight | none, // innerLeft + innerRight = deep merge inner join of two objects
   leftJoin   = left | innerLeft | innerRight | none,
   rightJoin  = none | innerLeft | innerRight | right,
   fullJoin   = left | innerLeft | innerRight | right,
@@ -77,12 +75,12 @@ function join(joinType?: JoinTypes) => (local function)<TContext>(context: TCont
 ```
 
 ```ts
-// 2. Set context
+// 2. Set context (left object)
 (local function)<TContext>(context: TContext) => (local function)<TJoinObject>(joinObject: TJoinObject)
 ```
 
 ```ts
-// 3. Set join object
+// 3. Set join object (right object) and gets result
 (local function)<TJoinObject>(joinObject: TJoinObject): TContext & TJoinObject
 ```
 
@@ -91,23 +89,59 @@ function join(joinType?: JoinTypes) => (local function)<TContext>(context: TCont
 ```typescript
 const rightJoin = join(JoinTypes.right);
 
-const joinObject = rightJoin({
+const contextJoinBy = rightJoin({
   sample1: "One",
   sample2: "Two",
   sample3: "Three",
 });
 
-const m = joinObject({
+const result = contextJoinBy({
   sample2: "Dos",
   sample3: "Tres",
   sample4: "Quatro",
 });
+
+console.log(result); // { sample4: "Quatro" }
 ```
 
-### As a function
+```typescript
+const leftJoin = join(JoinTypes.left);
+
+const contextJoinBy = leftJoin({
+  sample1: "One",
+  sample2: "Two",
+  sample3: "Three",
+});
+
+const result = contextJoinBy({
+  sample2: "Dos",
+  sample3: "Tres",
+  sample4: "Quatro",
+});
+
+console.log(result); // { sample1: "One" }
+```
 
 ```typescript
-const c = join(JoinTypes.innerJoin)({
+const complexJoin = join(JoinTypes.left | JoinTypes.innerLeft | JoinTypes.right);
+
+const contextJoinBy = complexJoin({
+  sample1: "One",
+  sample2: "Two",
+  sample3: "Three",
+});
+
+const result = contextJoinBy({
+  sample2: "Dos",
+  sample3: "Tres",
+  sample4: "Quatro",
+});
+
+console.log(result); // {sample1: "One", sample2: "Two", sample3: "Three", sample4: "Quatro"}
+```
+
+```typescript
+const result = join(JoinTypes.innerJoin)({
   sample1: "One",
   sample2: "Two",
   sample3: {
@@ -120,6 +154,8 @@ const c = join(JoinTypes.innerJoin)({
   },
   sample4: "Quatro",
 });
+
+console.log(result); // {sample2: "Dos", sample3: {smile: "cheese", sorrir: "queijo"}}
 ```
 
 ## Demo
@@ -132,4 +168,4 @@ Test it with a runkit: [https://npm.runkit.com/@lopatnov/join](https://npm.runki
 
 License [Apache-2.0](https://github.com/lopatnov/join/blob/master/LICENSE)
 
-Copyright 2020 Oleksandr Lopatnov
+Copyright 2020–2021 Oleksandr Lopatnov
