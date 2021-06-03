@@ -7,6 +7,7 @@
   /**
    * Join Types
    */
+  exports.JoinTypes = void 0;
   (function (JoinTypes) {
       JoinTypes[JoinTypes["none"] = 0] = "none";
       JoinTypes[JoinTypes["left"] = 8] = "left";
