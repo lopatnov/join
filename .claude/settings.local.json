@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C c:/projects/join log --oneline -15)",
+      "Bash(dir:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(npm run format:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm install:*)",
+      "Bash(npm test:*)",
+      "Bash(npm run lint:*)",
+      "Bash(npm run lint:fix:*)",
+      "Bash(npm run format:check:*)"
+    ]
+  }
+}

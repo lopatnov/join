@@ -8,18 +8,18 @@ export enum JoinTypes {
   innerLeft = 0b0100,
   innerRight = 0b0010,
   innerJoin = none | innerLeft | innerRight | none,
-  leftJoin =  left | innerLeft | innerRight | none,
+  leftJoin = left | innerLeft | innerRight | none,
   rightJoin = none | innerLeft | innerRight | right,
-  fullJoin =  left | innerLeft | innerRight | right,
-  expand =    left | none      | innerRight | right
+  fullJoin = left | innerLeft | innerRight | right,
+  expand = left | none | innerRight | right
 }
 
 function getPartNames(left: any, right: any) {
   let namesLeft = Object.getOwnPropertyNames(left);
   let namesRight = Object.getOwnPropertyNames(right);
-  let namesMid = namesLeft.filter(x => namesRight.indexOf(x) > -1);
-  namesLeft = namesLeft.filter(x => namesMid.indexOf(x) < 0);
-  namesRight = namesRight.filter(x => namesMid.indexOf(x) < 0);
+  const namesMid = namesLeft.filter((x) => namesRight.indexOf(x) > -1);
+  namesLeft = namesLeft.filter((x) => namesMid.indexOf(x) < 0);
+  namesRight = namesRight.filter((x) => namesMid.indexOf(x) < 0);
   return {
     left: namesLeft,
     middle: namesMid,
@@ -37,7 +37,7 @@ function attach(toObj: any, attachment: any, names: string[]) {
   if (toObj === attachment) return;
 
   for (let i = 0; i < names.length; i++) {
-    let descriptor = Object.getOwnPropertyDescriptor(attachment, names[i]);
+    const descriptor = Object.getOwnPropertyDescriptor(attachment, names[i]);
     Object.defineProperty(toObj, names[i], descriptor as PropertyDescriptor);
   }
 }
@@ -51,12 +51,11 @@ function isFunction(obj: any) {
 }
 
 function isPlainObject(obj: any) {
-  var proto, Ctor;
-  let toString = Object.prototype.toString;
-  let getProto = Object.getPrototypeOf;
-  let hasOwn = Object.prototype.hasOwnProperty;
-  var fnToString = hasOwn.toString;
-  var ObjectFunctionString = fnToString.call(Object);
+  const toString = Object.prototype.toString;
+  const getProto = Object.getPrototypeOf;
+  const hasOwn = Object.prototype.hasOwnProperty;
+  const fnToString = hasOwn.toString;
+  const ObjectFunctionString = fnToString.call(Object);
 
   // Detect obvious negatives
   // Use toString instead of type to catch host objects
@@ -64,30 +63,27 @@ function isPlainObject(obj: any) {
     return false;
   }
 
-  proto = getProto(obj);
-
   // Objects with no prototype (e.g., `Object.create( null )`) are plain
+  const proto = getProto(obj);
   if (!proto) {
     return true;
   }
 
   // Objects with prototype are plain iff they were constructed by a global Object function
-  Ctor = hasOwn.call(proto, "constructor") && proto.constructor;
-  return (
-    typeof Ctor === "function" && fnToString.call(Ctor) === ObjectFunctionString
-  );
+  const Ctor = hasOwn.call(proto, "constructor") && proto.constructor;
+  return typeof Ctor === "function" && fnToString.call(Ctor) === ObjectFunctionString;
 }
 
 function extend(...args: any[]) {
-  var options,
+  const length = args.length;
+  let options,
     name,
     src,
     copy,
     copyIsArray,
     clone,
-    target = arguments[0] || {},
+    target = args[0] || {},
     i = 1,
-    length = arguments.length,
     deep = false;
 
   // Handle a deep copy situation
@@ -95,7 +91,7 @@ function extend(...args: any[]) {
     deep = target;
 
     // Skip the boolean and the target
-    target = arguments[i] || {};
+    target = args[i] || {};
     i++;
   }
 
@@ -112,7 +108,7 @@ function extend(...args: any[]) {
 
   for (; i < length; i++) {
     // Only deal with non-null/undefined values
-    if ((options = arguments[i]) != null) {
+    if ((options = args[i]) != null) {
       // Extend the base object
       for (name in options) {
         copy = options[name];
@@ -124,11 +120,7 @@ function extend(...args: any[]) {
         }
 
         // Recurse if we're merging plain objects or arrays
-        if (
-          deep &&
-          copy &&
-          (isPlainObject(copy) || (copyIsArray = Array.isArray(copy)))
-        ) {
+        if (deep && copy && (isPlainObject(copy) || (copyIsArray = Array.isArray(copy)))) {
           src = target[name];
 
           // Ensure proper type for the source value
@@ -161,18 +153,11 @@ function mergeObjects(left: any, right: any, names: string[]) {
   for (let i = 0; i < names.length; i++) {
     if (
       right[names[i]] === null ||
-      [
-        "string",
-        "boolean",
-        "null",
-        "undefined",
-        "symbol",
-        "number",
-        "bigint",
-        "regexp"
-      ].indexOf((typeof right[names[i]]).toLowerCase()) > -1
+      ["string", "boolean", "null", "undefined", "symbol", "number", "bigint", "regexp"].indexOf(
+        (typeof right[names[i]]).toLowerCase()
+      ) > -1
     ) {
-      let descriptor = Object.getOwnPropertyDescriptor(right, names[i]);
+      const descriptor = Object.getOwnPropertyDescriptor(right, names[i]);
       Object.defineProperty(left, names[i], descriptor as PropertyDescriptor);
     } else {
       left[names[i]] = extend(true, left[names[i]], right[names[i]]);
@@ -185,14 +170,13 @@ function joinSource<TContext, TJoinObject>(
   withObject: TJoinObject,
   joinType: JoinTypes = JoinTypes.expand
 ): TContext & TJoinObject {
-  if ((joinType | 0b1111) <= 0)
-    throw new Error("Invalid join type. Please select join type");
+  if ((joinType | 0b1111) <= 0) throw new Error("Invalid join type. Please select join type");
 
   if (joinType === (JoinTypes.left | JoinTypes.innerLeft)) {
     return this as any;
   }
 
-  let names = getPartNames(this, withObject);
+  const names = getPartNames(this, withObject);
 
   //merge
   switch (joinType & JoinTypes.innerJoin) {
@@ -224,11 +208,11 @@ function joinSource<TContext, TJoinObject>(
 
 export function join(joinType: JoinTypes = JoinTypes.expand) {
   if (!joinType) {
-    throw new Error('Unknown join type');
+    throw new Error("Unknown join type");
   }
-  return function<TContext>(context: TContext) {
-    return function<TJoinObject>(joinObject: TJoinObject): TContext & TJoinObject {
+  return function <TContext>(context: TContext) {
+    return function <TJoinObject>(joinObject: TJoinObject): TContext & TJoinObject {
       return joinSource.call(context, joinObject, joinType) as TContext & TJoinObject;
-    }
-  }
+    };
+  };
 }

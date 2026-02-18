@@ -1,21 +1,39 @@
 {
   "name": "@lopatnov/join",
-  "version": "1.1.1",
+  "version": "2.0.0",
   "license": "Apache-2.0",
   "author": "lopatnov",
-  "description": "Object join technics",
+  "description": "SQL-like join operations for JavaScript objects — merge two objects using 9 composable join types (left, right, inner, full and more) with deep merge support.",
   "homepage": "https://lopatnov.github.io/join/",
   "keywords": [
     "TypeScript",
-    "Library",
+    "javascript",
+    "library",
     "typescript-library",
-    "join"
+    "join",
+    "sql-join",
+    "object-join",
+    "object-merge",
+    "deep-merge",
+    "merge",
+    "left-join",
+    "right-join",
+    "inner-join",
+    "full-join",
+    "bitwise",
+    "functional",
+    "currying",
+    "utility"
   ],
   "umdName": "join",
   "libraryFile": "join",
   "main": "dist/join.js",
   "module": "dist/join.es.js",
+  "browser": "dist/join.min.js",
   "types": "dist/join.d.ts",
+  "engines": {
+    "node": ">=18"
+  },
   "files": [
     "dist"
   ],
@@ -26,9 +44,20 @@
   "bugs": {
     "url": "https://github.com/lopatnov/join/issues"
   },
+  "exports": {
+    ".": {
+      "import": "./dist/join.es.js",
+      "require": "./dist/join.js",
+      "types": "./dist/join.d.ts"
+    }
+  },
   "scripts": {
-    "build": "rollup -c rollup.config.ts",
-    "watch": "rollup -cw rollup.config.ts",
+    "build": "rollup -c rollup.config.mjs",
+    "watch": "rollup -cw rollup.config.mjs",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.{ts,js}\"",
+    "format:check": "prettier --check \"src/**/*.ts\" \"tests/**/*.{ts,js}\"",
     "configure-npm": "node ./set-registry.js -s https://registry.npmjs.org",
     "configure-gpr": "node ./set-registry.js -s https://npm.pkg.github.com",
     "test": "jest"
@@ -37,19 +66,23 @@
     "access": "public"
   },
   "devDependencies": {
+    "@eslint/js": "^9.0.0",
     "@lopatnov/rollup-plugin-uglify": "^2.1.0",
-    "@types/jest": "^26.0.23",
-    "@types/typescript": "^2.0.0",
-    "jest": "^27.0.3",
-    "jest-config": "^27.0.3",
-    "rollup": "^2.50.5",
-    "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-json": "^4.0.0",
-    "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-sourcemaps": "^0.6.3",
-    "rollup-plugin-typescript2": "^0.30.0",
+    "@rollup/plugin-commonjs": "^25.0.0",
+    "@rollup/plugin-json": "^6.0.0",
+    "@rollup/plugin-node-resolve": "^15.0.0",
+    "@rollup/plugin-typescript": "^11.0.0",
+    "@types/jest": "^29.0.0",
+    "eslint": "^9.0.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "jest": "^29.0.0",
+    "prettier": "^3.0.0",
+    "rollup": "^4.0.0",
     "terser": "^5.7.0",
-    "ts-jest": "^27.0.2",
-    "typescript": "^4.3.2"
+    "ts-jest": "^29.0.0",
+    "tslib": "^2.8.1",
+    "typescript": "^5.0.0",
+    "typescript-eslint": "^8.0.0"
   }
 }

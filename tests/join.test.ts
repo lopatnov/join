@@ -2,13 +2,11 @@ import { join, JoinTypes } from "../src/join";
 
 describe("Simple tests", () => {
   test("join left", () => {
-    const c = join(JoinTypes.left)
-    ({
+    const c = join(JoinTypes.left)({
       sample1: "One",
       sample2: "Two",
       sample3: "Three"
-    })
-    ({
+    })({
       sample2: "Dos",
       sample3: "Tres",
       sample4: "Quatro"
@@ -75,13 +73,11 @@ describe("Simple tests", () => {
   });
 
   test("join middle right", () => {
-    const c = join(JoinTypes.innerRight)
-    ({
+    const c = join(JoinTypes.innerRight)({
       sample1: "One",
       sample2: "Two",
       sample3: "Three"
-    })
-    ({
+    })({
       sample2: "Dos",
       sample3: "Tres",
       sample4: "Quatro"
@@ -94,15 +90,13 @@ describe("Simple tests", () => {
   });
 
   test("join middle merge", () => {
-    const c = join(JoinTypes.innerJoin)
-    ({
+    const c = join(JoinTypes.innerJoin)({
       sample1: "One",
       sample2: "Two",
       sample3: {
         smile: "cheese"
       }
-    })
-    ({
+    })({
       sample2: "Dos",
       sample3: {
         sorrir: "queijo"
