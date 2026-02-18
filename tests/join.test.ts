@@ -172,6 +172,11 @@ describe("Edge cases", () => {
     expect((Object.prototype as any).polluted).not.toBeDefined();
   });
 
+  test("join none — returns empty object (no properties from either side)", () => {
+    const c = join(JoinTypes.none)(left)(right);
+    expect(Object.keys(c)).toHaveLength(0);
+  });
+
   test("invalid joinType throws an error", () => {
     expect(() => join(99 as JoinTypes)({ a: 1 })({ b: 2 })).toThrow();
   });

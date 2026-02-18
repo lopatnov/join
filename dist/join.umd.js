@@ -50,7 +50,9 @@
             return;
         for (let i = 0; i < names.length; i++) {
             const descriptor = Object.getOwnPropertyDescriptor(attachment, names[i]);
-            Object.defineProperty(toObj, names[i], descriptor);
+            if (descriptor) {
+                Object.defineProperty(toObj, names[i], descriptor);
+            }
         }
     }
     function isFunction(obj) {
@@ -181,9 +183,6 @@
         return target;
     }
     function join(joinType = exports.JoinTypes.expand) {
-        if (!joinType) {
-            throw new Error("Unknown join type");
-        }
         return function (context) {
             return function (joinObject) {
                 return joinSource(context, joinObject, joinType);

@@ -63,8 +63,9 @@
     "format:check": "prettier --check \"src/**/*.ts\" \"tests/**/*.{ts,js}\"",
     "configure-npm": "node ./set-registry.js -s https://registry.npmjs.org",
     "configure-gpr": "node ./set-registry.js -s https://npm.pkg.github.com",
-    "test": "vitest run  --coverage",
-    "test:watch": "vitest"
+    "test": "vitest run --coverage",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
   },
   "publishConfig": {
     "access": "public"

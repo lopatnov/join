@@ -47,7 +47,9 @@ function attach(toObj: any, attachment: any, names: string[]) {
 
   for (let i = 0; i < names.length; i++) {
     const descriptor = Object.getOwnPropertyDescriptor(attachment, names[i]);
-    Object.defineProperty(toObj, names[i], descriptor as PropertyDescriptor);
+    if (descriptor) {
+      Object.defineProperty(toObj, names[i], descriptor);
+    }
   }
 }
 
@@ -217,9 +219,6 @@ function joinSource<TContext, TJoinObject>(
 }
 
 export function join(joinType: JoinTypes = JoinTypes.expand) {
-  if (!joinType) {
-    throw new Error("Unknown join type");
-  }
   return function <TContext>(context: TContext) {
     return function <TJoinObject>(joinObject: TJoinObject): TContext & TJoinObject {
       return joinSource(context, joinObject, joinType);
