@@ -1,19 +1,17 @@
 {
   "compilerOptions": {
-    "moduleResolution": "node",
-    "target": "es5",
-    "module": "es2015",
-    "lib": ["es2015", "es2016", "es2017", "dom"],
-    "strict": true,
-    "sourceMap": true,
+    "moduleResolution": "bundler",
     "declaration": true,
+    "declarationDir": "./dist",
+    "rootDir": "./src",
+    "module": "ES2020",
+    "outDir": "./dist",
+    "target": "ES2020",
+    "sourceMap": true,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "declarationDir": "dist",
-    "outDir": "dist/lib",
-    "typeRoots": ["node_modules/@types"]
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true
   },
   "include": ["src"]
 }
