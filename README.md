@@ -198,7 +198,9 @@ Copyright 2020–2026 Oleksandr Lopatnov
 
 ---
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-lopatnov-informational?style=social&logo=linkedin)](https://www.linkedin.com/in/lopatnov/)
-[![Patreon](https://img.shields.io/badge/Donate-Patreon-informational)](https://www.patreon.com/lopatnov)
+**Oleksandr Lopatnov** — Full-stack developer
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?style=flat&logo=linkedin)](https://www.linkedin.com/in/lopatnov/)
+[![GitHub](https://img.shields.io/badge/GitHub-Follow-black?style=flat&logo=github)](https://github.com/lopatnov)
 
 If you find this library useful, please consider giving it a ⭐ on [GitHub](https://github.com/lopatnov/join).
