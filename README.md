@@ -17,7 +17,7 @@ npm install @lopatnov/join
 ### Browser
 
 ```html
-<script src="https://lopatnov.github.io/join/dist/join.min.js"></script>
+<script src="https://lopatnov.github.io/join/dist/join.umd.min.js"></script>
 ```
 
 ## Import

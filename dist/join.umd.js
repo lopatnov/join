@@ -4,6 +4,12 @@
     (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.join = {}));
 })(this, (function (exports) { 'use strict';
 
+    // Module-level constants for isPlainObject (computed once, not on every call)
+    const _toString = Object.prototype.toString;
+    const _getProto = Object.getPrototypeOf;
+    const _hasOwn = Object.prototype.hasOwnProperty;
+    const _fnToString = Function.prototype.toString;
+    const _ObjectFunctionString = _fnToString.call(Object);
     /**
      * Join Types
      */
@@ -23,9 +29,11 @@
     function getPartNames(left, right) {
         let namesLeft = Object.getOwnPropertyNames(left);
         let namesRight = Object.getOwnPropertyNames(right);
-        const namesMid = namesLeft.filter((x) => namesRight.indexOf(x) > -1);
-        namesLeft = namesLeft.filter((x) => namesMid.indexOf(x) < 0);
-        namesRight = namesRight.filter((x) => namesMid.indexOf(x) < 0);
+        const rightSet = new Set(namesRight);
+        const namesMid = namesLeft.filter((x) => rightSet.has(x));
+        const midSet = new Set(namesMid);
+        namesLeft = namesLeft.filter((x) => !midSet.has(x));
+        namesRight = namesRight.filter((x) => !midSet.has(x));
         return {
             left: namesLeft,
             middle: namesMid,
@@ -53,24 +61,19 @@
         return typeof obj === "function" && typeof obj.nodeType !== "number";
     }
     function isPlainObject(obj) {
-        const toString = Object.prototype.toString;
-        const getProto = Object.getPrototypeOf;
-        const hasOwn = Object.prototype.hasOwnProperty;
-        const fnToString = hasOwn.toString;
-        const ObjectFunctionString = fnToString.call(Object);
         // Detect obvious negatives
         // Use toString instead of type to catch host objects
-        if (!obj || toString.call(obj) !== "[object Object]") {
+        if (!obj || _toString.call(obj) !== "[object Object]") {
             return false;
         }
         // Objects with no prototype (e.g., `Object.create( null )`) are plain
-        const proto = getProto(obj);
+        const proto = _getProto(obj);
         if (!proto) {
             return true;
         }
         // Objects with prototype are plain iff they were constructed by a global Object function
-        const Ctor = hasOwn.call(proto, "constructor") && proto.constructor;
-        return typeof Ctor === "function" && fnToString.call(Ctor) === ObjectFunctionString;
+        const Ctor = _hasOwn.call(proto, "constructor") && proto.constructor;
+        return typeof Ctor === "function" && _fnToString.call(Ctor) === _ObjectFunctionString;
     }
     function extend(...args) {
         const length = args.length;
@@ -134,7 +137,8 @@
             return;
         for (let i = 0; i < names.length; i++) {
             if (right[names[i]] === null ||
-                ["string", "boolean", "null", "undefined", "symbol", "number", "bigint", "regexp"].indexOf((typeof right[names[i]]).toLowerCase()) > -1) {
+                right[names[i]] instanceof RegExp ||
+                ["string", "boolean", "undefined", "symbol", "number", "bigint"].indexOf(typeof right[names[i]]) > -1) {
                 const descriptor = Object.getOwnPropertyDescriptor(right, names[i]);
                 Object.defineProperty(left, names[i], descriptor);
             }
@@ -143,36 +147,38 @@
             }
         }
     }
-    function joinSource(withObject, joinType = exports.JoinTypes.expand) {
-        if ((joinType | 0b1111) <= 0)
+    function joinSource(context, withObject, joinType = exports.JoinTypes.expand) {
+        if ((joinType & -16) !== 0)
             throw new Error("Invalid join type. Please select join type");
+        // Create a shallow clone to avoid mutating the original context object
+        const target = Object.create(Object.getPrototypeOf(context), Object.getOwnPropertyDescriptors(context));
         if (joinType === (exports.JoinTypes.left | exports.JoinTypes.innerLeft)) {
-            return this;
+            return target;
         }
-        const names = getPartNames(this, withObject);
+        const names = getPartNames(target, withObject);
         //merge
         switch (joinType & exports.JoinTypes.innerJoin) {
             case exports.JoinTypes.none:
-                clearNames(this, names.middle);
+                clearNames(target, names.middle);
                 break;
             case exports.JoinTypes.innerLeft:
                 break;
             case exports.JoinTypes.innerRight:
-                attach(this, withObject, names.middle);
+                attach(target, withObject, names.middle);
                 break;
             case exports.JoinTypes.innerJoin:
-                mergeObjects(this, withObject, names.middle);
+                mergeObjects(target, withObject, names.middle);
                 break;
         }
         //left
         if ((joinType & exports.JoinTypes.left) !== exports.JoinTypes.left) {
-            clearNames(this, names.left);
+            clearNames(target, names.left);
         }
         //right
         if ((joinType & exports.JoinTypes.right) === exports.JoinTypes.right) {
-            attach(this, withObject, names.right);
+            attach(target, withObject, names.right);
         }
-        return this;
+        return target;
     }
     function join(joinType = exports.JoinTypes.expand) {
         if (!joinType) {
@@ -180,7 +186,7 @@
         }
         return function (context) {
             return function (joinObject) {
-                return joinSource.call(context, joinObject, joinType);
+                return joinSource(context, joinObject, joinType);
             };
         };
     }
@@ -188,4 +194,4 @@
     exports.join = join;
 
 }));
-//# sourceMappingURL=join.js.map
+//# sourceMappingURL=join.umd.js.map

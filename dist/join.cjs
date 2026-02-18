@@ -1,7 +1,15 @@
+'use strict';
+
+// Module-level constants for isPlainObject (computed once, not on every call)
+const _toString = Object.prototype.toString;
+const _getProto = Object.getPrototypeOf;
+const _hasOwn = Object.prototype.hasOwnProperty;
+const _fnToString = Function.prototype.toString;
+const _ObjectFunctionString = _fnToString.call(Object);
 /**
  * Join Types
  */
-var JoinTypes;
+exports.JoinTypes = void 0;
 (function (JoinTypes) {
     JoinTypes[JoinTypes["none"] = 0] = "none";
     JoinTypes[JoinTypes["left"] = 8] = "left";
@@ -13,13 +21,15 @@ var JoinTypes;
     JoinTypes[JoinTypes["rightJoin"] = 7] = "rightJoin";
     JoinTypes[JoinTypes["fullJoin"] = 15] = "fullJoin";
     JoinTypes[JoinTypes["expand"] = 11] = "expand";
-})(JoinTypes || (JoinTypes = {}));
+})(exports.JoinTypes || (exports.JoinTypes = {}));
 function getPartNames(left, right) {
     let namesLeft = Object.getOwnPropertyNames(left);
     let namesRight = Object.getOwnPropertyNames(right);
-    const namesMid = namesLeft.filter((x) => namesRight.indexOf(x) > -1);
-    namesLeft = namesLeft.filter((x) => namesMid.indexOf(x) < 0);
-    namesRight = namesRight.filter((x) => namesMid.indexOf(x) < 0);
+    const rightSet = new Set(namesRight);
+    const namesMid = namesLeft.filter((x) => rightSet.has(x));
+    const midSet = new Set(namesMid);
+    namesLeft = namesLeft.filter((x) => !midSet.has(x));
+    namesRight = namesRight.filter((x) => !midSet.has(x));
     return {
         left: namesLeft,
         middle: namesMid,
@@ -47,24 +57,19 @@ function isFunction(obj) {
     return typeof obj === "function" && typeof obj.nodeType !== "number";
 }
 function isPlainObject(obj) {
-    const toString = Object.prototype.toString;
-    const getProto = Object.getPrototypeOf;
-    const hasOwn = Object.prototype.hasOwnProperty;
-    const fnToString = hasOwn.toString;
-    const ObjectFunctionString = fnToString.call(Object);
     // Detect obvious negatives
     // Use toString instead of type to catch host objects
-    if (!obj || toString.call(obj) !== "[object Object]") {
+    if (!obj || _toString.call(obj) !== "[object Object]") {
         return false;
     }
     // Objects with no prototype (e.g., `Object.create( null )`) are plain
-    const proto = getProto(obj);
+    const proto = _getProto(obj);
     if (!proto) {
         return true;
     }
     // Objects with prototype are plain iff they were constructed by a global Object function
-    const Ctor = hasOwn.call(proto, "constructor") && proto.constructor;
-    return typeof Ctor === "function" && fnToString.call(Ctor) === ObjectFunctionString;
+    const Ctor = _hasOwn.call(proto, "constructor") && proto.constructor;
+    return typeof Ctor === "function" && _fnToString.call(Ctor) === _ObjectFunctionString;
 }
 function extend(...args) {
     const length = args.length;
@@ -128,7 +133,8 @@ function mergeObjects(left, right, names) {
         return;
     for (let i = 0; i < names.length; i++) {
         if (right[names[i]] === null ||
-            ["string", "boolean", "null", "undefined", "symbol", "number", "bigint", "regexp"].indexOf((typeof right[names[i]]).toLowerCase()) > -1) {
+            right[names[i]] instanceof RegExp ||
+            ["string", "boolean", "undefined", "symbol", "number", "bigint"].indexOf(typeof right[names[i]]) > -1) {
             const descriptor = Object.getOwnPropertyDescriptor(right, names[i]);
             Object.defineProperty(left, names[i], descriptor);
         }
@@ -137,47 +143,49 @@ function mergeObjects(left, right, names) {
         }
     }
 }
-function joinSource(withObject, joinType = JoinTypes.expand) {
-    if ((joinType | 0b1111) <= 0)
+function joinSource(context, withObject, joinType = exports.JoinTypes.expand) {
+    if ((joinType & -16) !== 0)
         throw new Error("Invalid join type. Please select join type");
-    if (joinType === (JoinTypes.left | JoinTypes.innerLeft)) {
-        return this;
+    // Create a shallow clone to avoid mutating the original context object
+    const target = Object.create(Object.getPrototypeOf(context), Object.getOwnPropertyDescriptors(context));
+    if (joinType === (exports.JoinTypes.left | exports.JoinTypes.innerLeft)) {
+        return target;
     }
-    const names = getPartNames(this, withObject);
+    const names = getPartNames(target, withObject);
     //merge
-    switch (joinType & JoinTypes.innerJoin) {
-        case JoinTypes.none:
-            clearNames(this, names.middle);
+    switch (joinType & exports.JoinTypes.innerJoin) {
+        case exports.JoinTypes.none:
+            clearNames(target, names.middle);
             break;
-        case JoinTypes.innerLeft:
+        case exports.JoinTypes.innerLeft:
             break;
-        case JoinTypes.innerRight:
-            attach(this, withObject, names.middle);
+        case exports.JoinTypes.innerRight:
+            attach(target, withObject, names.middle);
             break;
-        case JoinTypes.innerJoin:
-            mergeObjects(this, withObject, names.middle);
+        case exports.JoinTypes.innerJoin:
+            mergeObjects(target, withObject, names.middle);
             break;
     }
     //left
-    if ((joinType & JoinTypes.left) !== JoinTypes.left) {
-        clearNames(this, names.left);
+    if ((joinType & exports.JoinTypes.left) !== exports.JoinTypes.left) {
+        clearNames(target, names.left);
     }
     //right
-    if ((joinType & JoinTypes.right) === JoinTypes.right) {
-        attach(this, withObject, names.right);
+    if ((joinType & exports.JoinTypes.right) === exports.JoinTypes.right) {
+        attach(target, withObject, names.right);
     }
-    return this;
+    return target;
 }
-function join(joinType = JoinTypes.expand) {
+function join(joinType = exports.JoinTypes.expand) {
     if (!joinType) {
         throw new Error("Unknown join type");
     }
     return function (context) {
         return function (joinObject) {
-            return joinSource.call(context, joinObject, joinType);
+            return joinSource(context, joinObject, joinType);
         };
     };
 }
 
-export { JoinTypes, join };
-//# sourceMappingURL=join.es.js.map
+exports.join = join;
+//# sourceMappingURL=join.cjs.map

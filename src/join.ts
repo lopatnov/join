@@ -1,3 +1,10 @@
+// Module-level constants for isPlainObject (computed once, not on every call)
+const _toString = Object.prototype.toString;
+const _getProto = Object.getPrototypeOf;
+const _hasOwn = Object.prototype.hasOwnProperty;
+const _fnToString = Function.prototype.toString;
+const _ObjectFunctionString = _fnToString.call(Object);
+
 /**
  * Join Types
  */
@@ -17,9 +24,11 @@ export enum JoinTypes {
 function getPartNames(left: any, right: any) {
   let namesLeft = Object.getOwnPropertyNames(left);
   let namesRight = Object.getOwnPropertyNames(right);
-  const namesMid = namesLeft.filter((x) => namesRight.indexOf(x) > -1);
-  namesLeft = namesLeft.filter((x) => namesMid.indexOf(x) < 0);
-  namesRight = namesRight.filter((x) => namesMid.indexOf(x) < 0);
+  const rightSet = new Set(namesRight);
+  const namesMid = namesLeft.filter((x) => rightSet.has(x));
+  const midSet = new Set(namesMid);
+  namesLeft = namesLeft.filter((x) => !midSet.has(x));
+  namesRight = namesRight.filter((x) => !midSet.has(x));
   return {
     left: namesLeft,
     middle: namesMid,
@@ -51,27 +60,21 @@ function isFunction(obj: any) {
 }
 
 function isPlainObject(obj: any) {
-  const toString = Object.prototype.toString;
-  const getProto = Object.getPrototypeOf;
-  const hasOwn = Object.prototype.hasOwnProperty;
-  const fnToString = hasOwn.toString;
-  const ObjectFunctionString = fnToString.call(Object);
-
   // Detect obvious negatives
   // Use toString instead of type to catch host objects
-  if (!obj || toString.call(obj) !== "[object Object]") {
+  if (!obj || _toString.call(obj) !== "[object Object]") {
     return false;
   }
 
   // Objects with no prototype (e.g., `Object.create( null )`) are plain
-  const proto = getProto(obj);
+  const proto = _getProto(obj);
   if (!proto) {
     return true;
   }
 
   // Objects with prototype are plain iff they were constructed by a global Object function
-  const Ctor = hasOwn.call(proto, "constructor") && proto.constructor;
-  return typeof Ctor === "function" && fnToString.call(Ctor) === ObjectFunctionString;
+  const Ctor = _hasOwn.call(proto, "constructor") && proto.constructor;
+  return typeof Ctor === "function" && _fnToString.call(Ctor) === _ObjectFunctionString;
 }
 
 function extend(...args: any[]) {
@@ -153,8 +156,9 @@ function mergeObjects(left: any, right: any, names: string[]) {
   for (let i = 0; i < names.length; i++) {
     if (
       right[names[i]] === null ||
-      ["string", "boolean", "null", "undefined", "symbol", "number", "bigint", "regexp"].indexOf(
-        (typeof right[names[i]]).toLowerCase()
+      right[names[i]] instanceof RegExp ||
+      ["string", "boolean", "undefined", "symbol", "number", "bigint"].indexOf(
+        typeof right[names[i]]
       ) > -1
     ) {
       const descriptor = Object.getOwnPropertyDescriptor(right, names[i]);
@@ -166,44 +170,50 @@ function mergeObjects(left: any, right: any, names: string[]) {
 }
 
 function joinSource<TContext, TJoinObject>(
-  this: TContext,
+  context: TContext,
   withObject: TJoinObject,
   joinType: JoinTypes = JoinTypes.expand
 ): TContext & TJoinObject {
-  if ((joinType | 0b1111) <= 0) throw new Error("Invalid join type. Please select join type");
+  if ((joinType & ~0b1111) !== 0) throw new Error("Invalid join type. Please select join type");
+
+  // Create a shallow clone to avoid mutating the original context object
+  const target = Object.create(
+    Object.getPrototypeOf(context as object),
+    Object.getOwnPropertyDescriptors(context as object)
+  ) as TContext;
 
   if (joinType === (JoinTypes.left | JoinTypes.innerLeft)) {
-    return this as any;
+    return target as TContext & TJoinObject;
   }
 
-  const names = getPartNames(this, withObject);
+  const names = getPartNames(target, withObject);
 
   //merge
   switch (joinType & JoinTypes.innerJoin) {
     case JoinTypes.none:
-      clearNames(this, names.middle);
+      clearNames(target, names.middle);
       break;
     case JoinTypes.innerLeft:
       break;
     case JoinTypes.innerRight:
-      attach(this, withObject, names.middle);
+      attach(target, withObject, names.middle);
       break;
     case JoinTypes.innerJoin:
-      mergeObjects(this, withObject, names.middle);
+      mergeObjects(target, withObject, names.middle);
       break;
   }
 
   //left
   if ((joinType & JoinTypes.left) !== JoinTypes.left) {
-    clearNames(this, names.left);
+    clearNames(target, names.left);
   }
 
   //right
   if ((joinType & JoinTypes.right) === JoinTypes.right) {
-    attach(this, withObject, names.right);
+    attach(target, withObject, names.right);
   }
 
-  return this as any;
+  return target as TContext & TJoinObject;
 }
 
 export function join(joinType: JoinTypes = JoinTypes.expand) {
@@ -212,7 +222,7 @@ export function join(joinType: JoinTypes = JoinTypes.expand) {
   }
   return function <TContext>(context: TContext) {
     return function <TJoinObject>(joinObject: TJoinObject): TContext & TJoinObject {
-      return joinSource.call(context, joinObject, joinType) as TContext & TJoinObject;
+      return joinSource(context, joinObject, joinType);
     };
   };
 }

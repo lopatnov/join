@@ -13,24 +13,39 @@ const external = [
   ...Object.keys(pkg.peerDependencies || {})
 ];
 
+const input = `src/${pkg.libraryFile}.ts`;
 const plugins = [json(), typescript(), resolve(), commonjs()];
 
 export default [
+  // CommonJS (.cjs) + ES Module (.esm.mjs)
   {
-    input: `src/${pkg.libraryFile}.ts`,
+    input,
     output: [
-      { file: pkg.main, format: "umd", name: pkg.umdName, sourcemap: true },
-      { file: pkg.module, format: "es", sourcemap: true }
+      { file: "dist/join.cjs", format: "cjs", sourcemap: true },
+      { file: "dist/join.esm.mjs", format: "es", sourcemap: true }
     ],
     external,
     plugins
   },
+  // UMD — for browsers via <script> tag
   {
-    input: `src/${pkg.libraryFile}.ts`,
+    input,
     output: {
-      file: `dist/${pkg.libraryFile}.min.js`,
-      name: pkg.umdName,
+      file: "dist/join.umd.js",
       format: "umd",
+      name: pkg.umdName,
+      sourcemap: true
+    },
+    external,
+    plugins
+  },
+  // UMD minified
+  {
+    input,
+    output: {
+      file: "dist/join.umd.min.js",
+      format: "umd",
+      name: pkg.umdName,
       sourcemap: true
     },
     external,
