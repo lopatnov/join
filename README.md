@@ -40,17 +40,17 @@ const { join, JoinTypes } = require("@lopatnov/join");
 
 The library uses a **4-bit flag system** to describe which parts of two objects appear in the result:
 
-| Bit | Name          | Meaning                                             |
-|:---:|---------------|-----------------------------------------------------|
-| 3   | `left`        | Include properties unique to the left object        |
-| 2   | `innerLeft`   | Include shared properties, keeping left values      |
-| 1   | `innerRight`  | Include shared properties, using right values       |
-| 0   | `right`       | Include properties unique to the right object       |
+| Bit | Name         | Meaning                                        |
+| :-: | ------------ | ---------------------------------------------- |
+|  3  | `left`       | Include properties unique to the left object   |
+|  2  | `innerLeft`  | Include shared properties, keeping left values |
+|  1  | `innerRight` | Include shared properties, using right values  |
+|  0  | `right`      | Include properties unique to the right object  |
 
 ### Named Join Types
 
-| Join Type    | Bits   | Description                                                      |
-|:-------------|:------:|------------------------------------------------------------------|
+| Join Type    |  Bits  | Description                                                      |
+| :----------- | :----: | ---------------------------------------------------------------- |
 | `none`       | `0000` | Empty result — no properties from either object                  |
 | `left`       | `1000` | Only properties unique to the left object                        |
 | `right`      | `0001` | Only properties unique to the right object                       |
@@ -60,7 +60,7 @@ The library uses a **4-bit flag system** to describe which parts of two objects 
 | `leftJoin`   | `1110` | Left-unique + shared properties (deep-merged)                    |
 | `rightJoin`  | `0111` | Shared properties (deep-merged) + right-unique                   |
 | `fullJoin`   | `1111` | All properties from both objects, shared ones deep-merged        |
-| `expand`     | `1011` | Left-unique + right values for shared + right-unique *(default)* |
+| `expand`     | `1011` | Left-unique + right values for shared + right-unique _(default)_ |
 
 Custom join types can be composed with bitwise OR:
 
@@ -71,16 +71,20 @@ const customJoin = join(JoinTypes.left | JoinTypes.innerLeft | JoinTypes.right);
 ## API
 
 ```typescript
-function join(joinType?: JoinTypes): <TContext>(context: TContext) => <TJoinObject>(joinObject: TJoinObject) => TContext & TJoinObject
+function join(
+  joinType?: JoinTypes
+): <TContext>(
+  context: TContext
+) => <TJoinObject>(joinObject: TJoinObject) => TContext & TJoinObject;
 ```
 
 `join` uses a **curried three-step pattern**:
 
-| Step | Call | Description |
-|------|------|-------------|
-| 1 | `join(JoinTypes.xxx)` | Set the join type; returns a context-setter function |
-| 2 | `contextSetter(leftObject)` | Set the left object; returns a joiner function |
-| 3 | `joiner(rightObject)` | Set the right object; returns the merged result |
+| Step | Call                        | Description                                          |
+| ---- | --------------------------- | ---------------------------------------------------- |
+| 1    | `join(JoinTypes.xxx)`       | Set the join type; returns a context-setter function |
+| 2    | `contextSetter(leftObject)` | Set the left object; returns a joiner function       |
+| 3    | `joiner(rightObject)`       | Set the right object; returns the merged result      |
 
 `JoinTypes.expand` is the default join type when `join()` is called with no arguments.
 
@@ -183,7 +187,7 @@ Contributions are welcome. Please follow these steps:
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/my-change`)
 3. Write tests for your changes
-4. Ensure `npm run lint`, `npm run build`, and `npm test` all pass
+4. Ensure `npm run lint`, `npm run typecheck`, `npm run build`, and `npm test` all pass
 5. Open a pull request targeting the `master` branch
 
 ## Rights and Agreements
