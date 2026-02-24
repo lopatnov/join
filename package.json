@@ -1,6 +1,6 @@
 {
   "name": "@lopatnov/join",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "license": "Apache-2.0",
   "author": "lopatnov",
   "description": "SQL-like join operations for JavaScript objects — merge two objects using 9 composable join types (left, right, inner, full and more) with deep merge support.",
@@ -61,8 +61,6 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.{ts,js}\"",
     "format:check": "prettier --check \"src/**/*.ts\" \"tests/**/*.{ts,js}\"",
-    "configure-npm": "node ./set-registry.js -s https://registry.npmjs.org",
-    "configure-gpr": "node ./set-registry.js -s https://npm.pkg.github.com",
     "test": "vitest run --coverage",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit"
@@ -72,21 +70,21 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@lopatnov/rollup-plugin-uglify": "^4.0.0",
+    "@lopatnov/rollup-plugin-uglify": "^4.1.3",
     "@rollup/plugin-commonjs": "^29.0.0",
-    "@rollup/plugin-json": "^6.0.0",
+    "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@rollup/plugin-typescript": "^12.3.0",
     "@vitest/coverage-v8": "^4.0.18",
-    "eslint": "^10.0.0",
+    "eslint": "^10.0.2",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.0.0",
-    "prettier": "^3.0.0",
-    "rollup": "^4.0.0",
-    "terser": "^5.7.0",
+    "eslint-plugin-prettier": "^5.5.5",
+    "prettier": "^3.8.1",
+    "rollup": "^4.59.0",
+    "terser": "^5.46.0",
     "tslib": "^2.8.1",
-    "typescript": "^5.0.0",
-    "typescript-eslint": "^8.0.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.56.1",
     "vitest": "^4.0.18"
   }
 }

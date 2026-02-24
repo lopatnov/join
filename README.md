@@ -1,24 +1,43 @@
 # @lopatnov/join
 
-[![npm](https://img.shields.io/npm/dt/@lopatnov/join)](https://www.npmjs.com/package/@lopatnov/join)
-[![NPM version](https://badge.fury.io/js/%40lopatnov%2Fjoin.svg)](https://www.npmjs.com/package/@lopatnov/join)
+> A TypeScript library providing **SQL-like join operations** for JavaScript objects.
+> Merge two objects using one of 9 composable join types, with support for deep merging of nested objects.
+
+[![npm downloads](https://img.shields.io/npm/dt/@lopatnov/join)](https://www.npmjs.com/package/@lopatnov/join)
+[![npm version](https://badge.fury.io/js/%40lopatnov%2Fjoin.svg)](https://www.npmjs.com/package/@lopatnov/join)
 [![License](https://img.shields.io/github/license/lopatnov/join)](https://github.com/lopatnov/join/blob/master/LICENSE)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![GitHub issues](https://img.shields.io/github/issues/lopatnov/join)](https://github.com/lopatnov/join/issues)
 [![GitHub stars](https://img.shields.io/github/stars/lopatnov/join)](https://github.com/lopatnov/join/stargazers)
 
-A TypeScript library providing **SQL-like join operations** for JavaScript objects. Merge two objects using one of 9 composable join types, with support for deep merging of nested objects.
+---
 
-## Install
+## Table of Contents
+
+- [Installation](#installation)
+- [Import](#import)
+- [Join Types](#join-types)
+- [API](#api)
+- [Usage Examples](#usage-examples)
+- [Demo](#demo)
+- [Contributing](#contributing)
+- [Built With](#built-with)
+- [License](#license)
+
+---
+
+## Installation
 
 ```shell
 npm install @lopatnov/join
 ```
 
-### Browser
+**Browser:**
 
 ```html
 <script src="https://lopatnov.github.io/join/dist/join.umd.min.js"></script>
 ```
+
+---
 
 ## Import
 
@@ -33,6 +52,8 @@ import { join, JoinTypes } from "@lopatnov/join";
 ```javascript
 const { join, JoinTypes } = require("@lopatnov/join");
 ```
+
+---
 
 ## Join Types
 
@@ -68,6 +89,8 @@ Custom join types can be composed with bitwise OR:
 const customJoin = join(JoinTypes.left | JoinTypes.innerLeft | JoinTypes.right);
 ```
 
+---
+
 ## API
 
 ```typescript
@@ -87,6 +110,8 @@ function join(
 | 3    | `joiner(rightObject)`       | Set the right object; returns the merged result      |
 
 `JoinTypes.expand` is the default join type when `join()` is called with no arguments.
+
+---
 
 ## Usage Examples
 
@@ -175,32 +200,34 @@ console.log(result);
 // { sample2: "Dos", sample3: { smile: "cheese", sorrir: "queijo" } }
 ```
 
+---
+
 ## Demo
 
 - Live demo: [https://runkit.com/lopatnov/join](https://runkit.com/lopatnov/join)
 - Try in browser: [https://npm.runkit.com/@lopatnov/join](https://npm.runkit.com/%40lopatnov%2Fjoin)
 
+---
+
 ## Contributing
 
-Contributions are welcome. Please follow these steps:
+Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/my-change`)
-3. Write tests for your changes
-4. Ensure `npm run lint`, `npm run typecheck`, `npm run build`, and `npm test` all pass
-5. Open a pull request targeting the `master` branch
-
-## Rights and Agreements
-
-License [Apache-2.0](https://github.com/lopatnov/join/blob/master/LICENSE)
-
-Copyright 2020–2026 Oleksandr Lopatnov
+- Bug reports → [open an issue](https://github.com/lopatnov/join/issues)
+- Questions → [Discussions](https://github.com/lopatnov/join/discussions)
+- Found it useful? A [star on GitHub](https://github.com/lopatnov/join) helps others discover the project
 
 ---
 
-**Oleksandr Lopatnov** — Full-stack developer
+## Built With
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?style=flat&logo=linkedin)](https://www.linkedin.com/in/lopatnov/)
-[![GitHub](https://img.shields.io/badge/GitHub-Follow-black?style=flat&logo=github)](https://github.com/lopatnov)
+- [TypeScript](https://www.typescriptlang.org/) — strict typing throughout
+- [Rollup](https://rollupjs.org/) — bundled to ESM, CJS, and UMD formats
+- [Vitest](https://vitest.dev/) — unit testing with coverage
+- [ESLint](https://eslint.org/) + [Prettier](https://prettier.io/) — linting and formatting
 
-If you find this library useful, please consider giving it a ⭐ on [GitHub](https://github.com/lopatnov/join).
+---
+
+## License
+
+[Apache-2.0](https://github.com/lopatnov/join/blob/master/LICENSE) © 2020–2026 [Oleksandr Lopatnov](https://github.com/lopatnov) · [LinkedIn](https://www.linkedin.com/in/lopatnov/)
