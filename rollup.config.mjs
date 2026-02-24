@@ -43,6 +43,11 @@ export default [
       sourcemap: true
     },
     external,
-    plugins: [...plugins, uglify()]
+    plugins: [
+      ...plugins,
+      uglify({
+        hook: "renderChunk"
+      })
+    ]
   }
 ];
